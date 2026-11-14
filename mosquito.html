@@ -1,0 +1,722 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>모기야, 이리 와!</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Jua&family=Nunito:wght@600;700;800;900&display=swap");
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #f9f2df;
+        color: #57483c;
+        font-family: Nunito, "Jua", sans-serif;
+      }
+      .wrap {
+        max-width: 1180px;
+        margin: auto;
+        padding: 24px;
+      }
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .brand {
+        font-family: Jua, sans-serif;
+        font-size: 24px;
+      }
+      .brand span {
+        color: #ef8e70;
+      }
+      header small {
+        font-weight: 800;
+        color: #a6967d;
+      }
+      .intro {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+        margin: 25px 0 16px;
+      }
+      .intro h1 {
+        font-family: Jua, sans-serif;
+        font-weight: 400;
+        font-size: clamp(29px, 4vw, 44px);
+        margin: 0;
+      }
+      .intro p {
+        margin: 7px 0 0;
+        color: #998975;
+        font-weight: 700;
+      }
+      .pill {
+        background: #fff9e9;
+        border: 1px solid #eadfc6;
+        border-radius: 30px;
+        padding: 10px 16px;
+        font-size: 13px;
+        font-weight: 900;
+      }
+      .layout {
+        display: grid;
+        grid-template-columns: 1fr 245px;
+        gap: 16px;
+      }
+      .scene {
+        position: relative;
+        aspect-ratio: 16/10;
+        overflow: hidden;
+        border: 8px solid #fffdf5;
+        border-radius: 26px;
+        background: linear-gradient(#dceef0 0 72%, #e8d4b3 72%);
+        box-shadow: 0 8px 28px #8b77511c;
+      }
+      .scene:before {
+        content: "";
+        position: absolute;
+        left: 8%;
+        top: 12%;
+        width: 17%;
+        height: 26%;
+        border: 8px solid #fffaf0;
+        background: linear-gradient(130deg, #d0e9e8, #f2faf2);
+        box-shadow: 0 3px 0 #d1c8ac;
+        border-radius: 3px;
+      }
+      .scene:after {
+        content: "";
+        position: absolute;
+        bottom: 17%;
+        right: -3%;
+        width: 37%;
+        height: 8%;
+        background: #e7a884;
+        border-radius: 55% 55% 0 0;
+        box-shadow: 0 20px 0 #d99879;
+      }
+      .sun {
+        position: absolute;
+        left: 30%;
+        top: 12%;
+        color: #f4ca81;
+        font-size: 36px;
+      }
+      .plant {
+        position: absolute;
+        bottom: 20%;
+        left: 5%;
+        font-size: 56px;
+      }
+      .doodle {
+        position: absolute;
+        right: 10%;
+        top: 12%;
+        font-family: Jua;
+        color: #aecac4;
+        transform: rotate(8deg);
+        font-size: 20px;
+      }
+      .mosquito {
+        position: absolute;
+        width: 104px;
+        height: 104px;
+        transform: translate(-50%, -50%);
+        z-index: 3;
+        filter: drop-shadow(0 8px 3px #796b5b22);
+        user-select: none;
+        cursor: crosshair;
+      }
+      .mosquito svg {
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+      }
+      .wing {
+        animation: flap 0.22s ease-in-out infinite alternate;
+        transform-origin: 50% 62%;
+      }
+      @keyframes flap {
+        to {
+          transform: scaleX(0.72) rotate(8deg);
+        }
+      }
+      .trail {
+        position: absolute;
+        color: #a1b7ad;
+        font-size: 22px;
+        z-index: 2;
+      }
+      .hand {
+        position: absolute;
+        width: 37px;
+        height: 37px;
+        border: 3px solid white;
+        background: #ef9d7dbb;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 5;
+        box-shadow: 0 2px 8px #54493d44;
+        pointer-events: none;
+        display: none;
+      }
+      .effect {
+        position: absolute;
+        z-index: 6;
+        transform: translate(-50%, -50%);
+        font: 32px Jua;
+        color: #ef795f;
+        text-shadow: 2px 2px white;
+        pointer-events: none;
+        animation: pop 0.7s forwards;
+      }
+      @keyframes pop {
+        to {
+          opacity: 0;
+          transform: translate(-50%, -120%) scale(1.4);
+        }
+      }
+      .overlay {
+        position: absolute;
+        inset: 0;
+        z-index: 8;
+        background: #fff8e6db;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+      .overlay.hidden {
+        display: none;
+      }
+      .overlay h2 {
+        font: 36px Jua;
+        margin: 0 0 10px;
+      }
+      .overlay p {
+        line-height: 1.7;
+        color: #8d7c6c;
+        margin: 0 0 20px;
+      }
+      .button {
+        border: 0;
+        border-radius: 15px;
+        background: #ed9778;
+        color: white;
+        font: 20px Jua;
+        padding: 14px 25px;
+        cursor: pointer;
+        box-shadow: 0 4px 0 #d78265;
+      }
+      .button:hover {
+        background: #e98567;
+      }
+      .button.secondary {
+        background: #fff;
+        color: #8d7e6b;
+        border: 1px solid #e9ddc9;
+        box-shadow: none;
+        font-size: 15px;
+        padding: 10px 15px;
+      }
+      .side {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .card {
+        background: #fffdf6;
+        border: 1px solid #eee3d0;
+        border-radius: 21px;
+        padding: 19px;
+        box-shadow: 0 5px 18px #8b77510b;
+      }
+      .card h3 {
+        font: 18px Jua;
+        margin: 0 0 12px;
+      }
+      .scores {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .label {
+        font-size: 12px;
+        color: #ab9d8c;
+        font-weight: 900;
+      }
+      .number {
+        font: 34px Jua;
+        color: #e98e70;
+      }
+      .camera {
+        position: relative;
+        border-radius: 13px;
+        overflow: hidden;
+        background: #e3ece4;
+        aspect-ratio: 4/3;
+      }
+      .camera video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transform: scaleX(-1);
+      }
+      .camera span {
+        position: absolute;
+        bottom: 7px;
+        left: 8px;
+        background: #fffdf1d9;
+        padding: 4px 8px;
+        border-radius: 8px;
+        font-size: 11px;
+      }
+      .status {
+        font-size: 13px;
+        line-height: 1.5;
+        color: #8c7b6d;
+        margin: 10px 0 0;
+        min-height: 38px;
+      }
+      .guide {
+        font-size: 13px;
+        line-height: 1.7;
+        color: #968574;
+        margin: 0;
+      }
+      .guide b {
+        color: #e1896d;
+      }
+      footer {
+        text-align: center;
+        font-size: 12px;
+        color: #b4a48e;
+        margin-top: 19px;
+      }
+      @media (max-width: 760px) {
+        .wrap {
+          padding: 16px;
+        }
+        .layout {
+          grid-template-columns: 1fr;
+        }
+        .side {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+        }
+        .side .card:last-child {
+          grid-column: 1/-1;
+        }
+        .intro {
+          margin-top: 22px;
+        }
+        .pill {
+          display: none;
+        }
+        .scene {
+          aspect-ratio: 4/3;
+        }
+        .mosquito {
+          width: 82px;
+          height: 82px;
+        }
+        header small {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <div class="brand">✿ 작은 방의 <span>모기 소동</span></div>
+        <small>CLAP! CLAP! MOSQUITO</small>
+      </header>
+      <div class="intro">
+        <div>
+          <h1>모기야, 이리 와! 🦟</h1>
+          <p>앵앵 날아다니는 꼬마 모기를 손뼉으로 잡아봐요.</p>
+        </div>
+        <div class="pill">☀ 오늘의 미션 · 30초 동안 모기 잡기</div>
+      </div>
+      <div class="layout">
+        <main class="scene" id="scene">
+          <div class="sun">✳</div>
+          <div class="plant">🪴</div>
+          <div class="doodle">앵~ 나 잡아봐라!</div>
+          <div class="mosquito" id="bug" aria-label="모기">
+            <svg viewBox="0 0 120 120">
+              <g
+                stroke="#67584c"
+                stroke-width="3"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <g class="wing" fill="#fffefa" opacity=".92">
+                  <ellipse
+                    cx="38"
+                    cy="48"
+                    rx="25"
+                    ry="14"
+                    transform="rotate(32 38 48)"
+                  />
+                  <ellipse
+                    cx="82"
+                    cy="48"
+                    rx="25"
+                    ry="14"
+                    transform="rotate(-32 82 48)"
+                  />
+                </g>
+                <path
+                  d="M45 76 L29 87 M47 85 L34 99 M75 76 L91 87 M73 85 L86 99"
+                  fill="none"
+                />
+                <ellipse cx="60" cy="77" rx="21" ry="25" fill="#f3ba88" />
+                <path
+                  d="M42 76 Q60 82 78 76 M45 88 Q60 94 75 88"
+                  fill="none"
+                  stroke="#d88e70"
+                />
+                <circle cx="60" cy="55" r="22" fill="#f9cf9d" />
+                <path d="M50 37 Q44 23 40 25 M70 37 Q76 23 80 25" fill="none" />
+                <circle cx="40" cy="25" r="3" fill="#e89b7d" />
+                <circle cx="80" cy="25" r="3" fill="#e89b7d" />
+                <circle cx="53" cy="54" r="2.6" fill="#67584c" stroke="none" />
+                <circle cx="67" cy="54" r="2.6" fill="#67584c" stroke="none" />
+                <path d="M56 62 Q60 66 64 62 M60 66 L60 72" fill="none" />
+                <ellipse
+                  cx="46"
+                  cy="61"
+                  rx="4"
+                  ry="2"
+                  fill="#ed9f91"
+                  stroke="none"
+                />
+                <ellipse
+                  cx="74"
+                  cy="61"
+                  rx="4"
+                  ry="2"
+                  fill="#ed9f91"
+                  stroke="none"
+                />
+              </g>
+            </svg>
+          </div>
+          <div class="hand" id="hand0"></div>
+          <div class="hand" id="hand1"></div>
+          <div class="overlay" id="overlay">
+            <div>
+              <div style="font-size: 45px">🦟 ✨</div>
+              <h2 id="title">준비됐나요?</h2>
+              <p id="message">
+                카메라 앞에 두 손을 보여주고<br />모기가 있는 곳에서 손뼉을 짝!
+              </p>
+              <button class="button" id="start">카메라 켜고 시작하기</button>
+              <p style="font-size: 12px; margin: 15px 0 0">
+                카메라 없이도 모기를 클릭해서 연습할 수 있어요.
+              </p>
+              <button
+                class="button secondary"
+                id="practice"
+                style="margin-top: 10px"
+              >
+                클릭으로 연습하기
+              </button>
+            </div>
+          </div>
+        </main>
+        <aside class="side">
+          <div class="card">
+            <h3>오늘의 기록 ✨</h3>
+            <div class="scores">
+              <div>
+                <div class="label">잡은 모기</div>
+                <div class="number">
+                  <span id="score">0</span
+                  ><small style="font-size: 15px"> 마리</small>
+                </div>
+              </div>
+              <div>
+                <div class="label">남은 시간</div>
+                <div class="number">
+                  <span id="time">30</span
+                  ><small style="font-size: 15px"> 초</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <h3>손 인식 카메라 📷</h3>
+            <div class="camera">
+              <video id="video" autoplay muted playsinline></video
+              ><span id="camlabel">카메라 꺼짐</span>
+            </div>
+            <p class="status" id="status">
+              시작 버튼을 누르면 카메라를 켤게요.
+            </p>
+          </div>
+          <div class="card">
+            <h3>이렇게 해봐요 👏</h3>
+            <p class="guide">
+              ① 카메라에 <b>두 손 전체</b>를 보여주세요.<br />② 분홍 점을 모기
+              양옆에 맞춰요.<br />③ 손을 모아 <b>짝!</b> 잡은 뒤에는 양손을 다시
+              벌려주세요.
+            </p>
+          </div>
+        </aside>
+      </div>
+      <footer>
+        작은 모기와 함께하는 귀여운 손뼉 놀이 · 영상은 이 기기에서 처리돼요
+      </footer>
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1675469240/hands.js"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      const scene = document.querySelector("#scene"),
+        bug = document.querySelector("#bug"),
+        overlay = document.querySelector("#overlay"),
+        video = document.querySelector("#video"),
+        status = document.querySelector("#status"),
+        camlabel = document.querySelector("#camlabel"),
+        scoreEl = document.querySelector("#score"),
+        timeEl = document.querySelector("#time");
+      const markers = [
+        document.querySelector("#hand0"),
+        document.querySelector("#hand1"),
+      ];
+      let score = 0,
+        playing = false,
+        mode = "",
+        endTime = 0,
+        stream = null,
+        hands = null,
+        loopActive = false,
+        armed = false,
+        wasTwo = false,
+        prevDist = 1,
+        lastTwo = 0,
+        point = null,
+        lastHit = 0,
+        bugX = 0.5,
+        bugY = 0.45,
+        targetX = 0.5,
+        targetY = 0.45,
+        nextMove = 0,
+        previous = performance.now();
+      function newTarget() {
+        targetX = 0.13 + Math.random() * 0.74;
+        targetY = 0.16 + Math.random() * 0.58;
+        nextMove = performance.now() + 900 + Math.random() * 1200;
+      }
+      newTarget();
+      function position() {
+        bug.style.left = bugX * 100 + "%";
+        bug.style.top = bugY * 100 + "%";
+      }
+      function frame(now) {
+        let dt = Math.min((now - previous) / 1000, 0.05);
+        previous = now;
+        if (now > nextMove) newTarget();
+        let speed = 1 - Math.exp(-dt * 1.1);
+        bugX += (targetX - bugX) * speed;
+        bugY += (targetY - bugY) * speed;
+        position();
+        if (playing) {
+          let left = Math.max(0, Math.ceil((endTime - now) / 1000));
+          timeEl.textContent = left;
+          if (!left) finish();
+        }
+        requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+      function hit(x, y) {
+        if (!playing || performance.now() - lastHit < 500) return;
+        const rect = scene.getBoundingClientRect();
+        const dx = (x - bugX) * rect.width,
+          dy = (y - bugY) * rect.height;
+        const radius = Math.max(65, rect.width * 0.1);
+        if (Math.hypot(dx, dy) < radius) {
+          score++;
+          scoreEl.textContent = score;
+          lastHit = performance.now();
+          const el = document.createElement("div");
+          el.className = "effect";
+          el.style.left = bugX * 100 + "%";
+          el.style.top = bugY * 100 + "%";
+          el.textContent = "짝! ✨";
+          scene.appendChild(el);
+          setTimeout(() => el.remove(), 700);
+          newTarget();
+          bugX = 0.13 + Math.random() * 0.74;
+          bugY = 0.16 + Math.random() * 0.58;
+          position();
+        } else {
+          const el = document.createElement("div");
+          el.className = "effect";
+          el.style.left = x * 100 + "%";
+          el.style.top = y * 100 + "%";
+          el.textContent = "짝!";
+          scene.appendChild(el);
+          setTimeout(() => el.remove(), 700);
+        }
+      }
+      function reset(selected) {
+        score = 0;
+        scoreEl.textContent = "0";
+        timeEl.textContent = "30";
+        mode = selected;
+        armed = false;
+        wasTwo = false;
+        lastTwo = 0;
+        playing = true;
+        endTime = performance.now() + 30000;
+        overlay.classList.add("hidden");
+        newTarget();
+      }
+      function finish() {
+        playing = false;
+        overlay.classList.remove("hidden");
+        document.querySelector("#title").textContent = "놀이 끝! 🎉";
+        document.querySelector("#message").innerHTML =
+          `30초 동안 모기를 <b>${score}마리</b> 잡았어요!<br>한 번 더 도전해볼까요?`;
+        document.querySelector("#start").textContent = "카메라로 다시 하기";
+        document.querySelector("#practice").textContent = "클릭으로 다시 하기";
+        markers.forEach((m) => (m.style.display = "none"));
+      }
+      function onResults(results) {
+        if (!playing || mode !== "camera") return;
+        let list = results.multiHandLandmarks || [];
+        markers.forEach((m, i) => {
+          if (list[i]) {
+            let p = list[i][9];
+            m.style.display = "block";
+            m.style.left = (1 - p.x) * 100 + "%";
+            m.style.top = p.y * 100 + "%";
+          } else m.style.display = "none";
+        });
+        let now = performance.now();
+        if (list.length >= 2) {
+          let a = list[0][9],
+            b = list[1][9],
+            dx = a.x - b.x,
+            dy = a.y - b.y,
+            dist = Math.hypot(dx, dy);
+          let mid = { x: 1 - (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+          if (dist > 0.28) armed = true;
+          if (armed && dist < 0.16 && prevDist >= 0.16) {
+            hit(mid.x, mid.y);
+            armed = false;
+          }
+          point = mid;
+          prevDist = dist;
+          wasTwo = true;
+          lastTwo = now;
+          status.textContent = armed
+            ? "두 손이 보여요! 모기 위에서 짝 👏"
+            : "양손을 벌린 뒤 모기 위에서 짝!";
+        } else {
+          if (
+            armed &&
+            wasTwo &&
+            now - lastTwo < 300 &&
+            prevDist < 0.25 &&
+            point
+          ) {
+            hit(point.x, point.y);
+            armed = false;
+          }
+          wasTwo = false;
+          prevDist = 1;
+          status.textContent =
+            list.length === 1
+              ? "한 손이 보여요. 두 손을 카메라에 보여주세요."
+              : "두 손을 카메라에 보여주세요.";
+        }
+      }
+      async function track() {
+        if (loopActive) return;
+        loopActive = true;
+        while (stream && video.readyState >= 2) {
+          try {
+            await hands.send({ image: video });
+          } catch (e) {
+            status.textContent =
+              "손 인식에 문제가 생겼어요. 다시 시작해 주세요.";
+            break;
+          }
+          await new Promise((r) => requestAnimationFrame(r));
+        }
+        loopActive = false;
+      }
+      async function cameraStart() {
+        try {
+          status.textContent = "손 인식 준비 중이에요. 잠시만 기다려 주세요.";
+          if (!window.Hands)
+            throw Error(
+              "손 인식 도구를 불러오지 못했어요. 인터넷 연결을 확인해 주세요.",
+            );
+          if (!navigator.mediaDevices?.getUserMedia)
+            throw Error("카메라를 사용하려면 localhost에서 실행해 주세요.");
+          if (!stream) {
+            stream = await navigator.mediaDevices.getUserMedia({
+              video: { facingMode: "user", width: 640, height: 480 },
+              audio: false,
+            });
+            video.srcObject = stream;
+            await video.play();
+          }
+          if (!hands) {
+            hands = new Hands({
+              locateFile: (file) =>
+                `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1675469240/${file}`,
+            });
+            hands.setOptions({
+              maxNumHands: 2,
+              modelComplexity: 1,
+              minDetectionConfidence: 0.65,
+              minTrackingConfidence: 0.6,
+            });
+            hands.onResults(onResults);
+          }
+          camlabel.textContent = "카메라 켜짐";
+          reset("camera");
+          track();
+        } catch (e) {
+          status.textContent =
+            e.name === "NotAllowedError"
+              ? "카메라 권한을 허용해 주세요."
+              : e.message;
+          camlabel.textContent = "카메라 확인 필요";
+        }
+      }
+      document.querySelector("#start").addEventListener("click", cameraStart);
+      document.querySelector("#practice").addEventListener("click", () => {
+        if (stream) {
+          stream.getTracks().forEach((t) => t.stop());
+          stream = null;
+          video.srcObject = null;
+        }
+        camlabel.textContent = "클릭 연습 모드";
+        status.textContent = "날아다니는 모기를 클릭해 보세요!";
+        reset("practice");
+      });
+      scene.addEventListener("click", (e) => {
+        if (playing && mode === "practice") {
+          const r = scene.getBoundingClientRect();
+          hit((e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height);
+        }
+      });
+      window.addEventListener("pagehide", () =>
+        stream?.getTracks().forEach((t) => t.stop()),
+      );
+    </script>
+  </body>
+</html>
